@@ -1,0 +1,18 @@
+const { exec } = require("child_process")
+const open = require("open")
+const fs = require("fs")
+
+console.time("Finished")
+
+exec("dotnet build --no-dependencies -c Release", (err, stdout, stderr) => {
+    if (err == null) {
+        fs.renameSync("bin/Release/net35/StickLib.dll", "../StickLib.dll")
+        fs.rmSync("bin", { recursive: true, force: true })
+        fs.rmSync("obj", { recursive: true, force: true })
+
+        console.timeEnd("Finished")
+        open("steam://rungameid/674940")
+    } else {
+        throw "Failed to build"
+    }
+})
